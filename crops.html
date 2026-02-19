@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agri - Crop Management</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f1f8e9 0%, #c5e1a5 100%);
+      color: #333;
+      line-height: 1.6;
+      padding-bottom: 40px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #2d572c 0%, #4caf50 100%);
+      color: white;
+      padding: 20px 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+    }
+    
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 8px 12px;
+      border-radius: 6px;
+    }
+    
+    nav a:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    .page-title {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .page-title h1 {
+      font-size: 32px;
+      color: #2d572c;
+      margin-bottom: 10px;
+    }
+    
+    .page-title p {
+      font-size: 18px;
+      color: #666;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      margin-bottom: 25px;
+      transition: transform 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #e8f5e9;
+    }
+    
+    .card-header i {
+      font-size: 24px;
+      color: #4caf50;
+      background: #e8f5e9;
+      padding: 12px;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .card-header h2 {
+      font-size: 22px;
+      color: #2d572c;
+    }
+    
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    
+    .form-group {
+      margin-bottom: 18px;
+      position: relative;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2d572c;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .form-group label i {
+      color: #4caf50;
+      font-size: 16px;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px 15px 14px 45px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: all 0.3s ease;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #4caf50;
+      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+      outline: none;
+    }
+    
+    .form-group i.input-icon {
+      position: absolute;
+      left: 15px;
+      top: 42px;
+      color: #4caf50;
+      font-size: 18px;
+    }
+    
+    .form-hint {
+      font-size: 13px;
+      color: #666;
+      margin-top: 5px;
+      padding-left: 28px;
+    }
+    
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: #4caf50;
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .submit-btn:hover {
+      background: #2d572c;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .input-group {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .input-group .form-group {
+      flex: 1;
+    }
+    
+    .table-card {
+      overflow-x: auto;
+    }
+    
+    .crops-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    
+    .crops-table th, 
+    .crops-table td {
+      padding: 16px;
+      text-align: left;
+    }
+    
+    .crops-table th {
+      background-color: #4caf50;
+      color: white;
+      font-weight: 600;
+    }
+    
+    .crops-table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    
+    .crops-table tr:hover {
+      background-color: #f1f8e9;
+    }
+    
+    .status {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .status-available {
+      background: #e8f5e9;
+      color: #2d572c;
+    }
+    
+    .status-upcoming {
+      background: #e3f2fd;
+      color: #1565c0;
+    }
+    
+    .status-expired {
+      background: #ffebee;
+      color: #c62828;
+    }
+    
+    .action-btn {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-edit {
+      background: #bbdefb;
+      color: #0d47a1;
+    }
+    
+    .btn-delete {
+      background: #ffcdd2;
+      color: #c62828;
+    }
+    
+    .btn-edit:hover {
+      background: #90caf9;
+    }
+    
+    .btn-delete:hover {
+      background: #ef9a9a;
+    }
+    
+    .notification {
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      text-align: center;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    .info {
+      background-color: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+    
+    footer {
+      background: #2d572c;
+      color: white;
+      padding: 30px 0;
+      text-align: center;
+      margin-top: 40px;
+    }
+    
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin: 20px 0;
+    }
+    
+    .footer-links a {
+      color: #c5e1a5;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+      color: white;
+    }
+    
+    @media (max-width: 900px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .input-group {
+        flex-direction: column;
+        gap: 0;
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .header-content {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+      }
+      
+      .page-title h1 {
+        font-size: 28px;
+      }
+      
+      .page-title p {
+        font-size: 16px;
+      }
+      
+      .card-header h2 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <i class="fa-solid fa-tractor"></i>
+        <span>Agri Crop Management</span>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+          <li><a href="#"><i class="fa-solid fa-seedling"></i> My Crops</a></li>
+          <li><a href="#"><i class="fa-solid fa-calendar-days"></i> Schedule</a></li>
+          <li><a href="#"><i class="fa-solid fa-chart-simple"></i> Analytics</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="page-title">
+      <h1><i class="fa-solid fa-seedling"></i> Crop Management</h1>
+      <p>Add and manage your crops with ease</p>
+    </div>
+
+    <div id="successNotification" class="notification success" style="display: none;">
+      <i class="fa-solid fa-circle-check"></i> <span id="successMessage"></span>
+    </div>
+    
+    <div id="errorNotification" class="notification error" style="display: none;">
+      <i class="fa-solid fa-circle-exclamation"></i> Error: <span id="errorMessage"></span>
+    </div>
+
+    <div id="infoNotification" class="notification info">
+      <i class="fa-solid fa-database"></i> Connected to Supabase database successfully!
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <i class="fa-solid fa-plus"></i>
+        <h2>Add New Crop</h2>
+      </div>
+      
+      <form id="cropForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="cropName"><i class="fa-solid fa-signature"></i> Crop Name</label>
+            <i class="fa-solid fa-signature input-icon"></i>
+            <input type="text" id="cropName" placeholder="e.g., Tomato, Wheat" required>
+            <div class="form-hint">Enter the name of your crop</div>
+          </div>
+          
+          <div class="form-group">
+            <label for="cropCategory"><i class="fa-solid fa-tags"></i> Crop Category</label>
+            <i class="fa-solid fa-tags input-icon"></i>
+            <select id="cropCategory" required>
+              <option value="">Select Category</option>
+              <option value="Vegetables">Vegetables</option>
+              <option value="Fruits">Fruits</option>
+              <option value="Grains">Grains</option>
+              <option value="Pulses">Pulses</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="cropQuantity"><i class="fa-solid fa-weight-scale"></i> Quantity / Yield</label>
+            <i class="fa-solid fa-weight-scale input-icon"></i>
+            <input type="number" id="cropQuantity" step="0.01" min="0" placeholder="e.g., 100" required>
+            <div class="form-hint">Enter the quantity produced</div>
+          </div>
+          
+          <div class="form-group">
+            <label for="quantityUnit"><i class="fa-solid fa-ruler"></i> Unit</label>
+            <i class="fa-solid fa-ruler input-icon"></i>
+            <select id="quantityUnit" required>
+              <option value="kg">Kilograms (kg)</option>
+              <option value="quintal">Quintal</option>
+              <option value="ton">Tons</option>
+              <option value="unit">Units</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="growingCycle"><i class="fa-solid fa-calendar"></i> Season / Growing Cycle</label>
+            <i class="fa-solid fa-calendar input-icon"></i>
+            <select id="growingCycle" required>
+              <option value="">Select Season</option>
+              <option value="Kharif">Kharif</option>
+              <option value="Rabi">Rabi</option>
+              <option value="Zaid">Zaid</option>
+              <option value="Year-round">Year-round</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="expectedPrice"><i class="fa-solid fa-indian-rupee-sign"></i> Expected Price per Unit</label>
+            <i class="fa-solid fa-indian-rupee-sign input-icon"></i>
+            <input type="number" id="expectedPrice" step="0.01" min="0" placeholder="e.g., 25.50" required>
+            <div class="form-hint">Enter your expected selling price per unit</div>
+          </div>
+          
+          <div class="input-group">
+            <div class="form-group">
+              <label for="availableFrom"><i class="fa-solid fa-calendar-day"></i> Available From</label>
+              <i class="fa-solid fa-calendar-day input-icon"></i>
+              <input type="date" id="availableFrom" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="availableUntil"><i class="fa-solid fa-calendar-xmark"></i> Available Until</label>
+              <i class="fa-solid fa-calendar-xmark input-icon"></i>
+              <input type="date" id="availableUntil" required>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="certification"><i class="fa-solid fa-certificate"></i> Certification / Quality Grade</label>
+            <i class="fa-solid fa-certificate input-icon"></i>
+            <select id="certification">
+              <option value="">Select Certification (Optional)</option>
+              <option value="Organic">Organic</option>
+              <option value="Government Certified">Government Certified</option>
+              <option value="Grade A">Grade A</option>
+              <option value="Grade B">Grade B</option>
+              <option value="Grade C">Grade C</option>
+              <option value="None">None</option>
+            </select>
+          </div>
+        </div>
+        
+        <button type="submit" class="submit-btn">
+          <i class="fa-solid fa-plus"></i> Add Crop
+        </button>
+      </form>
+    </div>
+
+    <div class="card table-card">
+      <div class="card-header">
+        <i class="fa-solid fa-list"></i>
+        <h2>My Crops</h2>
+      </div>
+      
+      <div class="table-controls">
+        <button id="loadCrops" class="submit-btn" style="max-width: 200px; margin-bottom: 15px;">
+          <i class="fa-solid fa-refresh"></i> Load Crops
+        </button>
+      </div>
+      
+      <table class="crops-table">
+        <thead>
+          <tr>
+            <th>Crop Name</th>
+            <th>Category</th>
+            <th>Quantity</th>
+            <th>Season</th>
+            <th>Price/Unit</th>
+            <th>Availability</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="cropsTableBody">
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 20px;">
+              No crops found. Add crops using the form above or click "Load Crops" to fetch from database.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <p>© 2023 Agri Crop Management System. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#">About Us</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+      <p>Designed for modern farmers</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // Supabase configuration - Replace with your actual credentials
+    const SUPABASE_URL = "https://llgfdxakywicjifzczen.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsZ2ZkeGFreXdpY2ppZnpjemVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcwNzI5NTUsImV4cCI6MjA3MjY0ODk1NX0.6iXVo6CUBVtJRbl0LS_4X2svlCsJNvyxTU-Po3gRFQA";
+    
+    // Initialize Supabase client
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // DOM Elements
+    const successNotification = document.getElementById('successNotification');
+    const errorNotification = document.getElementById('errorNotification');
+    const infoNotification = document.getElementById('infoNotification');
+    const successMessage = document.getElementById('successMessage');
+    const errorMessage = document.getElementById('errorMessage');
+    const cropsTableBody = document.getElementById('cropsTableBody');
+    
+    // Hide info notification after 5 seconds
+    setTimeout(() => {
+      infoNotification.style.display = "none";
+    }, 5000);
+    
+    // Form submission handling
+    document.getElementById("cropForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      
+      // Get form values
+      const cropData = {
+        name: document.getElementById("cropName").value,
+        category: document.getElementById("cropCategory").value,
+        quantity: document.getElementById("cropQuantity").value,
+        unit: document.getElementById("quantityUnit").value,
+        growing_cycle: document.getElementById("growingCycle").value,
+        expected_price: document.getElementById("expectedPrice").value,
+        available_from: document.getElementById("availableFrom").value,
+        available_until: document.getElementById("availableUntil").value,
+        certification: document.getElementById("certification").value || 'None',
+        created_at: new Date().toISOString()
+      };
+      
+      // Validate form
+      if (!cropData.name || !cropData.category || !cropData.quantity || !cropData.growing_cycle || 
+          !cropData.expected_price || !cropData.available_from || !cropData.available_until) {
+        showError("Please fill in all required fields");
+        return;
+      }
+      
+      try {
+        // Insert into Supabase
+        const { data, error } = await supabaseClient
+          .from('crops')
+          .insert([cropData]);
+          
+        if (error) {
+          throw error;
+        }
+        
+        showSuccess("Crop added successfully!");
+        document.getElementById("cropForm").reset();
+        
+        // Reload crops
+        loadCropsFromSupabase();
+        
+      } catch (error) {
+        console.error("Error adding crop:", error);
+        showError("Failed to add crop: " + error.message);
+      }
+    });
+    
+    // Load crops from Supabase
+    async function loadCropsFromSupabase() {
+      try {
+        const { data: crops, error } = await supabaseClient
+          .from('crops')
+          .select('*')
+          .order('created_at', { ascending: false });
+          
+        if (error) {
+          throw error;
+        }
+        
+        displayCrops(crops);
+        
+      } catch (error) {
+        console.error("Error loading crops:", error);
+        showError("Failed to load crops: " + error.message);
+      }
+    }
+    
+    // Display crops in table
+    function displayCrops(crops) {
+      if (!crops || crops.length === 0) {
+        cropsTableBody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 20px;">
+              No crops found. Add crops using the form above.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+      
+      let tableHTML = '';
+      
+      crops.forEach(crop => {
+        const today = new Date();
+        const availableFrom = new Date(crop.available_from);
+        const availableUntil = new Date(crop.available_until);
+        
+        let status = 'upcoming';
+        let statusText = 'Upcoming';
+        
+        if (today >= availableFrom && today <= availableUntil) {
+          status = 'available';
+          statusText = 'Available';
+        } else if (today > availableUntil) {
+          status = 'expired';
+          statusText = 'Expired';
+        }
+        
+        tableHTML += `
+          <tr>
+            <td><i class="fa-solid fa-seedling" style="color: #27ae60;"></i> ${crop.name}</td>
+            <td>${crop.category}</td>
+            <td>${crop.quantity} ${crop.unit}</td>
+            <td>${crop.growing_cycle}</td>
+            <td>₹${parseFloat(crop.expected_price).toFixed(2)}</td>
+            <td><span class="status status-${status}">${statusText}</span></td>
+            <td>
+              <button class="action-btn btn-edit" data-id="${crop.id}"><i class="fa-solid fa-pen"></i></button>
+              <button class="action-btn btn-delete" data-id="${crop.id}"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+        `;
+      });
+      
+      cropsTableBody.innerHTML = tableHTML;
+      
+      // Add event listeners to delete buttons
+      document.querySelectorAll('.btn-delete').forEach(button => {
+        button.addEventListener('click', function() {
+          const cropId = this.getAttribute('data-id');
+          deleteCrop(cropId);
+        });
+      });
+    }
+    
+    // Delete crop
+    async function deleteCrop(cropId) {
+      if (!confirm('Are you sure you want to delete this crop?')) {
+        return;
+      }
+      
+      try {
+        const { error } = await supabaseClient
+          .from('crops')
+          .delete()
+          .eq('id', cropId);
+          
+        if (error) {
+          throw error;
+        }
+        
+        showSuccess("Crop deleted successfully!");
+        loadCropsFromSupabase();
+        
+      } catch (error) {
+        console.error("Error deleting crop:", error);
+        showError("Failed to delete crop: " + error.message);
+      }
+    }
+    
+    // Load crops button
+    document.getElementById('loadCrops').addEventListener('click', function() {
+      loadCropsFromSupabase();
+    });
+    
+    // Show success notification
+    function showSuccess(message) {
+      successMessage.textContent = message;
+      successNotification.style.display = "block";
+      errorNotification.style.display = "none";
+      
+      setTimeout(() => {
+        successNotification.style.display = "none";
+      }, 5000);
+    }
+    
+    // Show error notification
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorNotification.style.display = "block";
+      successNotification.style.display = "none";
+      
+      setTimeout(() => {
+        errorNotification.style.display = "none";
+      }, 5000);
+    }
+    
+    // Set default dates for availability
+    document.addEventListener('DOMContentLoaded', function() {
+      const today = new Date();
+      const nextMonth = new Date();
+      nextMonth.setMonth(today.getMonth() + 1);
+      
+      document.getElementById('availableFrom').valueAsDate = today;
+      document.getElementById('availableUntil').valueAsDate = nextMonth;
+      
+      // Auto-load crops on page load
+      loadCropsFromSupabase();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raitha Bandhu - Schedule Organic Delivery</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* ===== CSS Variables ===== */
+    :root {
+      --primary: #2e7d32;
+      --primary-light: #4caf50;
+      --primary-dark: #1b5e20;
+      --secondary: #8d6e63;
+      --accent: #ffa000;
+      --text: #333333;
+      --text-light: #666666;
+      --background: #f8f9fa;
+      --white: #ffffff;
+      --border: #e0e0e0;
+      --success: #4caf50;
+      --warning: #ff9800;
+      --error: #f44336;
+      --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      --radius: 12px;
+      --organic-green: #e8f5e9;
+    }
+
+    /* ===== General Styles ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: #f8f9fa; 
+      color: #333; 
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1000px; 
+      margin: 20px auto; 
+      background: white; 
+      padding: 20px; 
+      border-radius: 12px; 
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
+    }
+
+    /* ===== Brand Header ===== */
+    .brand-header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #e9ecef;
+      position: relative;
+    }
+
+    .brand-name {
+      color: var(--primary);
+      font-size: 36px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .brand-tagline {
+      color: var(--text-light);
+      font-size: 16px;
+      background: var(--organic-green);
+      padding: 8px 15px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-top: 5px;
+    }
+
+    .organic-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--accent);
+      color: white;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 15px;
+      font-weight: bold;
+    }
+
+    /* ===== Step Progress ===== */
+    .step-progress {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    .step-progress::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: #e9ecef;
+      z-index: 1;
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      flex: 1;
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #e9ecef;
+      color: #6c757d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+      font-weight: bold;
+      border: 3px solid #fff;
+      transition: all 0.3s;
+    }
+
+    .step.active .step-number {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .step.completed .step-number {
+      background: var(--primary-dark);
+      color: white;
+    }
+
+    .step-text {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 500;
+    }
+
+    .step.active .step-text {
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    /* ===== Page Title ===== */
+    h1 { 
+      color: var(--primary-dark); 
+      margin-bottom: 20px; 
+      text-align: center;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #e9ecef;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* ===== Summary Card ===== */
+    .summary-card {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 25px;
+      border: 1px solid #e9ecef;
+      position: relative;
+    }
+
+    .summary-card h2 {
+      color: var(--primary-dark);
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #dee2e6;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* ===== Delivery Form ===== */
+    .delivery-form {
+      margin-top: 30px;
+      padding: 25px;
+      background: #f9f9f9;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      box-sizing: border-box;
+      transition: border 0.3s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
+    }
+
+    /* ===== Time Slots ===== */
+    .time-slots {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .time-slot {
+      padding: 12px 15px;
+      background: white;
+      border-radius: 5px;
+      cursor: pointer;
+      border: 2px solid #ddd;
+      text-align: center;
+      transition: all 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .time-slot:hover {
+      border-color: var(--primary-light);
+      transform: translateY(-2px);
+    }
+
+    .time-slot.selected {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary-dark);
+    }
+
+    .time-slot.disabled {
+      background: #f8d7da;
+      color: #721c24;
+      cursor: not-allowed;
+      border-color: #f5c6cb;
+    }
+
+    .slot-icon {
+      font-size: 18px;
+    }
+
+    .slot-time {
+      font-weight: bold;
+      font-size: 15px;
+      line-height: 1.3;
+    }
+
+    .slot-availability {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .time-slot.selected .slot-availability {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* ===== Buttons ===== */
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .btn { 
+      background: var(--primary); 
+      color: white; 
+      border: none; 
+      padding: 12px 20px; 
+      border-radius: 8px; 
+      font-size: 16px; 
+      cursor: pointer; 
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .btn:hover { 
+      background: var(--primary-dark); 
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .btn i {
+      margin-right: 8px;
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+
+    /* ===== Popup Styling ===== */
+    .popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--primary);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+    }
+
+    .popup i {
+      margin-right: 10px;
+      font-size: 20px;
+    }
+
+    .popup.show { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+
+    .popup.error {
+      background: var(--error);
+    }
+
+    /* ===== Loader ===== */
+    .loader {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid var(--primary);
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      animation: spin 1s linear infinite;
+      margin-right: 10px;
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* ===== Table Styling ===== */
+    table { 
+      width: 100%; 
+      border-collapse: collapse; 
+      margin-bottom: 20px; 
+    }
+
+    th, td { 
+      padding: 12px; 
+      border-bottom: 1px solid #ddd; 
+      text-align: center; 
+    }
+
+    th { 
+      background: #f2f2f2; 
+      color: var(--primary-dark);
+    }
+
+    .total-row { 
+      font-weight: bold; 
+      background-color: #f8f9fa;
+    }
+
+    /* ===== Organic Badges ===== */
+    .organic-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--organic-green);
+      color: var(--primary);
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      margin-left: 10px;
+    }
+
+    /* ===== Responsive Design ===== */
+    @media (max-width: 768px) {
+      .container {
+        margin: 10px;
+        padding: 15px;
+      }
+      
+      .time-slots {
+        grid-template-columns: 1fr;
+      }
+      
+      .button-group {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+      
+      .brand-name {
+        font-size: 28px;
+      }
+      
+      .step-progress {
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .step-progress::before {
+        display: none;
+      }
+    }
+
+    /* ===== Additional Features ===== */
+    .farmer-message {
+      background: var(--organic-green);
+      border-left: 4px solid var(--primary);
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    .delivery-options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .delivery-option {
+      padding: 15px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+    }
+
+    .delivery-option:hover {
+      border-color: var(--primary-light);
+    }
+
+    .delivery-option.selected {
+      border-color: var(--primary);
+      background: var(--organic-green);
+    }
+
+    .option-icon {
+      font-size: 24px;
+      margin-bottom: 10px;
+      color: var(--primary);
+    }
+
+    .delivery-badge {
+      background: var(--accent);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-left: 8px;
+    }
+
+    .free-delivery-message {
+      color: var(--success);
+      font-size: 14px;
+      margin-top: 8px;
+      font-weight: 500;
+    }
+
+    .order-id-display {
+      background: var(--organic-green);
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+      text-align: center;
+      display: none;
+    }
+
+    .order-id {
+      font-weight: bold;
+      color: var(--primary-dark);
+      font-size: 18px;
+    }
+    
+    .empty-cart {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-light);
+    }
+    
+    .empty-cart i {
+      font-size: 64px;
+      margin-bottom: 16px;
+      color: #ccc;
+    }
+    
+    .empty-cart h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+    
+    .empty-cart p {
+      margin-bottom: 24px;
+      color: var(--text-light);
+    }
+    
+    .delivery-hours-notice {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 12px 15px;
+      margin-top: 10px;
+      border-radius: 4px;
+      font-size: 14px;
+      color: #856404;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Brand Header -->
+    <div class="brand-header">
+      <div class="brand-name">
+        <i class="fas fa-seedling"></i>
+        Raitha Bandhu
+      </div>
+      <div class="brand-tagline">
+        <i class="fas fa-leaf"></i> 100% Organic Farm Products
+      </div>
+      <div class="organic-badge">Certified Organic</div>
+    </div>
+
+    <!-- Step Progress -->
+    <div class="step-progress">
+      <div class="step completed">
+        <div class="step-number">1</div>
+        <div class="step-text">Cart</div>
+      </div>
+      <div class="step active">
+        <div class="step-number">2</div>
+        <div class="step-text">Delivery</div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-text">Payment</div>
+      </div>
+    </div>
+
+    <!-- Page Title -->
+    <h1>
+      <i class="fas fa-truck"></i>
+      Schedule Your Organic Delivery
+    </h1>
+    
+    <!-- Farmer Message -->
+    <div class="farmer-message">
+      <i class="fas fa-hand-holding-heart"></i> 
+      <strong>Thank you for supporting local organic farmers!</strong> Your order helps sustain traditional farming practices and promotes a healthier ecosystem.
+    </div>
+    
+    <!-- Order Summary -->
+    <div class="summary-card">
+      <h2><i class="fas fa-shopping-basket"></i> Organic Order Summary</h2>
+      <div id="orderSummary"></div>
+    </div>
+    
+    <!-- Delivery Form -->
+    <div class="delivery-form">
+      <h2><i class="fas fa-truck"></i> Delivery Information</h2>
+      
+      <!-- Delivery Options -->
+      <div class="form-group">
+        <label><i class="fas fa-shipping-fast"></i> Delivery Type</label>
+        <div class="delivery-options">
+          <div class="delivery-option selected" data-type="express">
+            <div class="option-icon"><i class="fas fa-bolt"></i></div>
+            <div class="option-title">Express Delivery 
+              <span class="delivery-badge" id="deliveryBadge">₹50</span>
+            </div>
+            <div class="option-desc">Same day delivery | 15-30 minutes</div>
+            <div class="free-delivery-message" id="freeDeliveryMessage">
+              <i class="fas fa-tag"></i> Free for orders above ₹500!
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Delivery Date -->
+      <div class="form-group">
+        <label for="deliveryDate"><i class="fas fa-calendar-alt"></i> Preferred Delivery Date</label>
+        <input type="date" id="deliveryDate" min="">
+      </div>
+      
+      <!-- Time Slots -->
+      <div class="form-group">
+        <label><i class="fas fa-clock"></i> Preferred Time Slot</label>
+        
+        <div class="delivery-hours-notice">
+          <i class="fas fa-info-circle"></i> Standard delivery hours: 6 AM to 11 PM
+        </div>
+        
+        <div class="time-slots" id="timeSlots">
+          <div class="time-slot" data-time="6-8">
+            <div class="slot-icon"><i class="fas fa-sun"></i></div>
+            <div class="slot-time">6:00 AM - 8:00 AM</div>
+            <div class="slot-availability">5 slots left</div>
+          </div>
+          <div class="time-slot" data-time="8-10">
+            <div class="slot-icon"><i class="fas fa-sun"></i></div>
+            <div class="slot-time">8:00 AM - 10:00 AM</div>
+            <div class="slot-availability">5 slots left</div>
+          </div>
+          <div class="time-slot" data-time="10-12">
+            <div class="slot-icon"><i class="fas fa-sun"></i></div>
+            <div class="slot-time">10:00 AM - 12:00 PM</div>
+            <div class="slot-availability">5 slots left</div>
+          </div>
+          <div class="time-slot" data-time="12-2">
+            <div class="slot-icon"><i class="fas fa-sun"></i></div>
+            <div class="slot-time">12:00 PM - 2:00 PM</div>
+            <div class="slot-availability">5 slots left</div>
+          </div>
+          <div class="time-slot" data-time="2-4">
+            <div class="slot-icon"><i class="fas fa-sun"></i></div>
+            <div class="slot-time">2:00 PM - 4:00 PM</div>
+            <div class="slot-availability">5 slots left</div>
+          </div>
+          <div class="time-slot" data-time="4-6">
+            <div class="slot-icon"><i class="fas fa-sun"></i></div>
+            <div class="slot-time">4:00 PM - 6:00 PM</div>
+            <div class="slot-availability">5 slots left</div>
+          </div>
+          <div class="time-slot" data-time="6-8">
+            <div class="slot-icon"><i class="fas fa-moon"></i></div>
+            <div class="slot-time">6:00 PM - 8:00 PM</div>
+            <div class="slot-availability">5 slots left</div>
+          </div>
+          <div class="time-slot" data-time="8-10">
+            <div class="slot-icon"><i class="fas fa-moon"></i></div>
+            <div class="slot-time">8:00 PM - 10:00 PM</div>
+            <div class="slot-availability">5 slots left</div>
+          </div>
+          <div class="time-slot" data-time="10-11">
+            <div class="slot-icon"><i class="fas fa-moon"></i></div>
+            <div class="slot-time">10:00 PM - 11:00 PM</div>
+            <div class="slot-availability">5 slots left</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Customer Information -->
+      <div class="form-group">
+        <label for="customerName"><i class="fas fa-user"></i> Your Name</label>
+        <input type="text" id="customerName" placeholder="Enter your full name">
+      </div>
+      
+      <div class="form-group">
+        <label for="customerPhone"><i class="fas fa-phone"></i> Phone Number</label>
+        <input type="tel" id="customerPhone" placeholder="Enter your phone number">
+      </div>
+      
+      <div class="form-group">
+        <label for="deliveryAddress"><i class="fas fa-map-marker-alt"></i> Delivery Address</label>
+        <textarea id="deliveryAddress" rows="3" placeholder="Enter your complete delivery address"></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="deliveryNotes"><i class="fas fa-sticky-note"></i> Special Instructions</label>
+        <input type="text" id="deliveryNotes" placeholder="Any special instructions for delivery (e.g., leave at door)">
+      </div>
+      
+      <!-- Action Buttons -->
+      <div class="button-group">
+        <button class="btn btn-secondary" id="backToCartBtn">
+          <i class="fas fa-arrow-left"></i> Back to Cart
+        </button>
+        <button class="btn" id="confirmDeliveryBtn">
+          <i class="fas fa-check-circle"></i> Confirm Organic Delivery
+        </button>
+      </div>
+      
+      <!-- Order ID Display -->
+      <div class="order-id-display" id="orderIdDisplay">
+        <i class="fas fa-receipt"></i> Your Order ID: <span class="order-id" id="orderId"></span>
+        <p style="margin-top: 10px;">We've sent a confirmation to your phone. Thank you for choosing Raitha Bandhu!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup Notification -->
+  <div id="popup" class="popup"></div>
+
+  <script>
+    // Global variables
+    let selectedTimeSlot = null;
+    let selectedDeliveryType = 'express';
+    
+    // Initialize the page
+    function init() {
+      // Set minimum date to today for faster delivery
+      const today = new Date();
+      document.getElementById('deliveryDate').min = today.toISOString().split('T')[0];
+      
+      // Set default date to today
+      document.getElementById('deliveryDate').value = today.toISOString().split('T')[0];
+
+      // Render order summary
+      renderOrderSummary();
+      
+      // Set up event listeners
+      setupEventListeners();
+      
+      // Auto-select first available time slot
+      setTimeout(() => {
+        const firstAvailable = document.querySelector('.time-slot:not(.disabled)');
+        if (firstAvailable && !selectedTimeSlot) {
+          firstAvailable.click();
+        }
+      }, 500);
+    }
+
+    // Set up event listeners
+    function setupEventListeners() {
+      // Time slot selection
+      document.querySelectorAll('.time-slot').forEach(slot => {
+        slot.addEventListener('click', function() {
+          if (this.classList.contains('disabled')) return;
+          
+          document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+          this.classList.add('selected');
+          selectedTimeSlot = this.getAttribute('data-time');
+        });
+      });
+      
+      // Date change
+      document.getElementById('deliveryDate').addEventListener('change', function() {
+        // Auto-select first available time slot
+        const firstAvailable = document.querySelector('.time-slot:not(.disabled)');
+        if (firstAvailable && !selectedTimeSlot) {
+          firstAvailable.click();
+        } else if (!firstAvailable) {
+          // No slots available, clear selection
+          document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+          selectedTimeSlot = null;
+        }
+      });
+      
+      // Confirm delivery button
+      document.getElementById('confirmDeliveryBtn').addEventListener('click', confirmDelivery);
+      
+      // Back to cart button
+      document.getElementById('backToCartBtn').addEventListener('click', function() {
+        window.location.href = 'cart.html';
+      });
+    }
+
+    // Get cart from localStorage
+    function getCart() {
+      return JSON.parse(localStorage.getItem('cart')) || {};
+    }
+
+    // Get all available products - UPDATED WITH ALL PRODUCTS FROM CART PAGE
+    function getProducts() {
+      return [
+        { id: 1, name: 'Apple', price: 120, unit: 'per kg', category: 'fruits', icon: 'fas fa-apple-alt' },
+        { id: 2, name: 'Banana', price: 60, unit: 'per dozen', category: 'fruits', icon: 'fas fa-ban' },
+        { id: 3, name: 'Orange', price: 80, unit: 'per kg', category: 'fruits', icon: 'fas fa-lemon' },
+        { id: 4, name: 'Mango', price: 150, unit: 'per kg', category: 'fruits', icon: 'fas fa-apple-alt' },
+        { id: 5, name: 'Grapes', price: 90, unit: 'per kg', category: 'fruits', icon: 'fas fa-grapes' },
+        { id: 6, name: 'Papaya', price: 70, unit: 'per kg', category: 'fruits', icon: 'fas fa-papaya' },
+        { id: 7, name: 'Pineapple', price: 100, unit: 'per kg', category: 'fruits', icon: 'fas fa-pineapple' },
+        { id: 8, name: 'Watermelon', price: 40, unit: 'per kg', category: 'fruits', icon: 'fas fa-watermelon' },
+        { id: 101, name: 'Potato', price: 50, unit: 'per kg', category: 'vegetables', icon: 'fas fa-seedling' },       
+        { id: 102, name: 'Tomato', price: 60, unit: 'per kg', category: 'vegetables', icon: 'fas fa-seedling' },
+        { id: 103, name: 'Onion', price: 40, unit: 'per kg', category: 'vegetables', icon: 'fas fa-seedling' },
+        { id: 104, name: 'Garlic', price: 50, unit: 'per kg', category: 'vegetables', icon: 'fas fa-seedling' },
+        { id: 105, name: 'Brinjal', price: 90, unit: 'per kg', category: 'vegetables', icon: 'fas fa-seedling' },
+        { id: 106, name: 'Green Chili', price: 20, unit: 'per kg', category: 'vegetables', icon: 'fas fa-pepper-hot' },
+        { id: 107, name: 'Ginger', price: 30, unit: 'per kg', category: 'vegetables', icon: 'fas fa-seedling' },
+        { id: 108, name: 'Carrot', price: 40, unit: 'per kg', category: 'vegetables', icon: 'fas fa-carrot' },
+        { id: 201, name: 'Turmeric Powder', price: 80, unit: 'per kg', category: 'spices', icon: 'fas fa-mortar-pestle' },       
+        { id: 202, name: 'Cumin Seeds', price: 70, unit: 'per kg', category: 'spices', icon: 'fas fa-mortar-pestle' },
+        { id: 203, name: 'Coriander Powder', price: 60, unit: 'per kg', category: 'spices', icon: 'fas fa-mortar-pestle' },
+        { id: 204, name: 'Red Chili Powder', price: 90, unit: 'per pack', category: 'spices', icon: 'fas fa-mortar-pestle' },
+        { id: 205, name: 'Garam Masala', price: 120, unit: 'per pack', category: 'spices', icon: 'fas fa-mortar-pestle' },
+        { id: 206, name: 'Black Pepper', price: 150, unit: 'per 100g', category: 'spices', icon: 'fas fa-mortar-pestle' },
+        { id: 207, name: 'Cardamom Pods', price: 200, unit: 'per 100g', category: 'spices', icon: 'fas fa-mortar-pestle' },
+        { id: 208, name: 'Cinnamon Sticks', price: 110, unit: 'per 100g', category: 'spices', icon: 'fas fa-mortar-pestle' },
+        { id: 301, name: 'Tomato Seeds', price: 50, unit: 'per packet', category: 'seeds', icon: 'fas fa-seedling' },       
+        { id: 302, name: 'Bell Pepper Seeds', price: 60, unit: 'per packet', category: 'seeds', icon: 'fas fa-seedling' },
+        { id: 303, name: 'Carrot Seeds', price: 40, unit: 'per packet', category: 'seeds', icon: 'fas fa-seedling' },
+        { id: 304, name: 'Cucumber Seeds', price: 50, unit: 'per packet', category: 'seeds', icon: 'fas fa-seedling' },
+        { id: 305, name: 'Brinjal Seeds', price: 90, unit: 'per packet', category: 'seeds', icon: 'fas fa-seedling' },
+        { id: 306, name: 'Lettuce Seeds', price: 20, unit: 'per packet', category: 'seeds', icon: 'fas fa-seedling' },
+        { id: 307, name: 'Spinach Seeds', price: 30, unit: 'per packet', category: 'seeds', icon: 'fas fa-seedling' },
+        { id: 308, name: 'Basil Seeds', price: 40, unit: 'per packet', category: 'seeds', icon: 'fas fa-seedling' },
+        { id: 401, name: 'NPK Fertilizer', price: 150, unit: 'per 5kg', category: 'fertilizers', icon: 'fas fa-flask' },       
+        { id: 402, name: 'Compost Manure', price: 200, unit: 'per 5kg', category: 'fertilizers', icon: 'fas fa-flask' },
+        { id: 403, name: 'Vermi Compost', price: 120, unit: 'per 5kg', category: 'fertilizers', icon: 'fas fa-flask' },
+        { id: 404, name: 'Cow Dung Manure', price: 250, unit: 'per 5kg', category: 'fertilizers', icon: 'fas fa-flask' },
+        { id: 405, name: 'Neem Cake Fertilizer', price: 300, unit: 'per 5kg', category: 'fertilizers', icon: 'fas fa-flask' },
+        { id: 406, name: 'Seaweed Fertilizer', price: 350, unit: 'per 5kg', category: 'fertilizers', icon: 'fas fa-flask' },
+        { id: 407, name: 'Fish Meal', price: 280, unit: 'per 5kg', category: 'fertilizers', icon: 'fas fa-flask' },
+        { id: 408, name: 'Poultry Manure', price: 180, unit: 'per 5kg', category: 'fertilizers', icon: 'fas fa-flask' }
+      ];
+    }
+
+    // Calculate delivery fee based on order total
+    function calculateDeliveryFee(subtotal) {
+      // Free express delivery for orders above ₹500
+      return subtotal >= 500 ? 0 : 50;
+    }
+
+    // Update delivery option display
+    function updateDeliveryOptionDisplay(subtotal) {
+      const deliveryFee = calculateDeliveryFee(subtotal);
+      const deliveryBadge = document.getElementById('deliveryBadge');
+      const freeDeliveryMessage = document.getElementById('freeDeliveryMessage');
+      
+      if (deliveryFee === 0) {
+        deliveryBadge.textContent = 'FREE';
+        deliveryBadge.style.background = 'var(--success)';
+        freeDeliveryMessage.style.display = 'block';
+      } else {
+        deliveryBadge.textContent = '₹50';
+        deliveryBadge.style.background = 'var(--accent)';
+        freeDeliveryMessage.style.display = 'block';
+      }
+    }
+
+    // Render order summary - FIXED VERSION
+    function renderOrderSummary() {
+      const container = document.getElementById("orderSummary");
+      const cart = getCart();
+      const products = getProducts();
+
+      console.log("Cart from localStorage:", cart);
+      console.log("Available products:", products);
+
+      if (Object.keys(cart).length === 0) {
+        container.innerHTML = `
+          <div class="empty-cart">
+            <i class="fas fa-shopping-cart"></i>
+            <h3>Your cart is empty</h3>
+            <p>Looks like you haven't added any organic products to your cart yet.</p>
+            <a href="index.html" class="btn">
+              <i class="fas fa-store"></i>
+              Shop Organic Products
+            </a>
+          </div>
+        `;
+        return;
+      }
+
+      let summaryHTML = `<table>
+        <tr>
+          <th>Organic Product</th>
+          <th>Price</th>
+          <th>Qty</th>
+          <th>Total</th>
+        </tr>`;
+
+      let subtotal = 0;
+      let itemsFound = 0;
+
+      Object.keys(cart).forEach(productId => {
+        const item = products.find(p => p.id == productId);
+        if (!item) {
+          console.warn(`Product with ID ${productId} not found in products list`);
+          return;
+        }
+
+        const quantity = cart[productId];
+        const itemTotal = item.price * quantity;
+        subtotal += itemTotal;
+        itemsFound++;
+
+        summaryHTML += `
+          <tr>
+            <td>${item.name} <span class="organic-indicator"><i class="fas fa-leaf"></i> Organic</span></td>
+            <td>₹${item.price}</td>
+            <td>${quantity}</td>
+            <td>₹${itemTotal}</td>
+          </tr>`;
+      });
+
+      // If no items were found in the cart
+      if (itemsFound === 0) {
+        container.innerHTML = `
+          <div class="empty-cart">
+            <i class="fas fa-shopping-cart"></i>
+            <h3>Cart items not found</h3>
+            <p>There seems to be an issue with your cart items. Please go back and add items again.</p>
+            <a href="index.html" class="btn">
+              <i class="fas fa-store"></i>
+              Shop Organic Products
+            </a>
+          </div>
+        `;
+        return;
+      }
+
+      // Add delivery fee
+      const deliveryFee = calculateDeliveryFee(subtotal);
+      const tax = subtotal * 0.05; // 5% tax
+      const total = subtotal + deliveryFee + tax;
+
+      summaryHTML += `
+        <tr>
+          <td colspan="3" style="text-align:right;">Subtotal:</td>
+          <td>₹${subtotal}</td>
+        </tr>
+        <tr>
+          <td colspan="3" style="text-align:right;">Delivery Fee:</td>
+          <td>${deliveryFee === 0 ? 'FREE' : '₹' + deliveryFee}</td>
+        </tr>
+        <tr>
+          <td colspan="3" style="text-align:right;">Tax (5%):</td>
+          <td>₹${tax.toFixed(2)}</td>
+        </tr>
+        <tr class="total-row">
+          <td colspan="3" style="text-align:right;">Total:</td>
+          <td>₹${total.toFixed(2)}</td>
+        </tr></table>`;
+
+      container.innerHTML = summaryHTML;
+      
+      // Update delivery option display
+      updateDeliveryOptionDisplay(subtotal);
+      
+      console.log("Order summary rendered. Subtotal:", subtotal, "Items found:", itemsFound);
+    }
+
+    // Confirm delivery and redirect to payment page
+    function confirmDelivery() {
+      const deliveryDate = document.getElementById('deliveryDate').value;
+      const deliveryAddress = document.getElementById('deliveryAddress').value;
+      const customerName = document.getElementById('customerName').value;
+      const customerPhone = document.getElementById('customerPhone').value;
+      const cart = getCart();
+      
+      if (Object.keys(cart).length === 0) {
+        showPopup('Your cart is empty!', true);
+        return;
+      }
+      
+      if (!deliveryDate) {
+        showPopup('Please select a delivery date', true);
+        return;
+      }
+      
+      if (!selectedTimeSlot) {
+        showPopup('Please select a time slot', true);
+        return;
+      }
+      
+      if (!deliveryAddress.trim()) {
+        showPopup('Please enter a delivery address', true);
+        return;
+      }
+      
+      if (!customerName.trim()) {
+        showPopup('Please enter your name', true);
+        return;
+      }
+      
+      if (!customerPhone.trim()) {
+        showPopup('Please enter your phone number', true);
+        return;
+      }
+      
+      // Store delivery information in localStorage for payment page
+      const deliveryInfo = {
+        date: deliveryDate,
+        time: selectedTimeSlot,
+        address: deliveryAddress.trim(),
+        name: customerName.trim(),
+        phone: customerPhone.trim(),
+        notes: document.getElementById('deliveryNotes').value.trim()
+      };
+      
+      localStorage.setItem('deliveryInfo', JSON.stringify(deliveryInfo));
+      
+      // Show loading state
+      const confirmBtn = document.getElementById('confirmDeliveryBtn');
+      const originalText = confirmBtn.innerHTML;
+      confirmBtn.innerHTML = '<div class="loader"></div> Processing...';
+      confirmBtn.disabled = true;
+      
+      // Simulate processing and redirect to payment page
+      setTimeout(() => {
+        window.location.href = 'payment.html';
+      }, 1500);
+    }
+
+    function showPopup(message, isError = false) {
+      const popup = document.getElementById('popup');
+      popup.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-circle' : 'fa-check-circle'}"></i> ${message}`;
+      popup.classList.add('show');
+      if (isError) {
+        popup.classList.add('error');
+      } else {
+        popup.classList.remove('error');
+      }
+
+      setTimeout(() => {
+        popup.classList.remove('show');
+      }, 3000);
+    }
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', function() {
+      init();
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../farmer agri"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "agrii"
+	}
+}

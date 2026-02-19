@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Raitha Bandhu - Organic Farmer Portal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #e8f5e9, #c8e6c9, #a5d6a7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(76, 175, 80, 0.2);
+      width: 420px;
+      max-width: 95%;
+      overflow: hidden;
+      animation: fadeIn 0.8s ease;
+      position: relative;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .logo i {
+      font-size: 32px;
+      margin-right: 10px;
+    }
+
+    .logo h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .tagline {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-top: 5px;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: space-around;
+      background: #f3f3f3;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 15px 0;
+      font-weight: 600;
+      color: #555;
+      transition: 0.3s;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .tab.active {
+      color: #2E7D32;
+      background: white;
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: #2E7D32;
+    }
+
+    form {
+      padding: 30px;
+      display: none;
+    }
+
+    form.active {
+      display: block;
+      animation: slideIn 0.4s ease;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      color: #2E7D32;
+      text-align: center;
+      margin-top: 0;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 15px;
+      transition: 0.2s;
+      background: #f9f9f9;
+    }
+
+    input:focus {
+      border-color: #4CAF50;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+      background: white;
+    }
+
+    .input-icon {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #777;
+    }
+
+    .toggle-password {
+      cursor: pointer;
+    }
+
+    .remember-forgot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 0;
+      font-size: 14px;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .forgot-password {
+      color: #4CAF50;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+
+    .btn {
+      width: 100%;
+      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+      border: none;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn.loading {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .btn.loading i {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .message {
+      text-align: center;
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .success {
+      background: #E8F5E9;
+      color: #2E7D32;
+      border: 1px solid #C8E6C9;
+    }
+
+    .error {
+      background: #FFEBEE;
+      color: #C62828;
+      border: 1px solid #FFCDD2;
+    }
+
+    .password-strength {
+      margin-top: 5px;
+      font-size: 12px;
+    }
+
+    .strength-bar {
+      height: 5px;
+      border-radius: 5px;
+      margin-top: 5px;
+      background: #eee;
+      overflow: hidden;
+    }
+
+    .strength-fill {
+      height: 100%;
+      width: 0%;
+      transition: 0.3s;
+    }
+
+    .terms {
+      font-size: 12px;
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+    }
+
+    .terms a {
+      color: #4CAF50;
+      text-decoration: none;
+    }
+
+    .language-selector {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 5px;
+      padding: 5px 10px;
+      font-size: 12px;
+      color: white;
+      cursor: pointer;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        width: 100%;
+      }
+      form {
+        padding: 20px;
+      }
+      .header {
+        padding: 15px;
+      }
+      .logo h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <i class="fas fa-leaf"></i>
+        <h1>Raitha Bandhu</h1>
+      </div>
+      <div class="tagline">100% Organic Agriculture Platform</div>
+      <div class="language-selector">
+        <i class="fas fa-globe"></i> English
+      </div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" id="login-tab">
+        <i class="fas fa-sign-in-alt"></i> Login
+      </div>
+      <div class="tab" id="signup-tab">
+        <i class="fas fa-user-plus"></i> Sign Up
+      </div>
+    </div>
+
+    <!-- Login Form -->
+    <form id="login-form" class="active">
+      <h2>Welcome Back Farmer! 👨‍🌾</h2>
+      
+      <div class="input-group">
+        <input type="email" id="login-email" placeholder="Email Address" required />
+        <i class="fas fa-envelope input-icon"></i>
+      </div>
+      
+      <div class="input-group">
+        <input type="password" id="login-password" placeholder="Password" required />
+        <i class="fas fa-lock input-icon"></i>
+        <i class="fas fa-eye toggle-password input-icon" onclick="togglePassword('login-password', this)"></i>
+      </div>
+      
+      <div class="remember-forgot">
+        <div class="remember-me">
+          <input type="checkbox" id="remember" />
+          <label for="remember">Remember Me</label>
+        </div>
+        <a href="#" class="forgot-password">Forgot Password?</a>
+      </div>
+      
+      <button type="button" class="btn" id="login-btn" onclick="login()">
+        <i class="fas fa-sign-in-alt"></i> Login to Dashboard
+      </button>
+      
+      <div id="login-msg"></div>
+    </form>
+
+    <!-- Signup Form -->
+    <form id="signup-form">
+      <h2>Join Our Organic Community 🌱</h2>
+      
+      <div class="input-group">
+        <input type="text" id="signup-name" placeholder="Full Name" required />
+        <i class="fas fa-user input-icon"></i>
+      </div>
+      
+      <div class="input-group">
+        <input type="email" id="signup-email" placeholder="Email Address" required />
+        <i class="fas fa-envelope input-icon"></i>
+      </div>
+      
+      <div class="input-group">
+        <input type="password" id="signup-password" placeholder="Create Password" required oninput="checkPasswordStrength(this.value)" />
+        <i class="fas fa-lock input-icon"></i>
+        <i class="fas fa-eye toggle-password input-icon" onclick="togglePassword('signup-password', this)"></i>
+      </div>
+      
+      <div class="password-strength">
+        <div>Password Strength: <span id="strength-text">Weak</span></div>
+        <div class="strength-bar">
+          <div class="strength-fill" id="strength-fill" style="width: 20%; background: #f44336;"></div>
+        </div>
+      </div>
+      
+      <button type="button" class="btn" id="signup-btn" onclick="signup()">
+        <i class="fas fa-user-plus"></i> Create Account
+      </button>
+      
+      <div id="signup-msg"></div>
+      
+      <div class="terms">
+        By signing up, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // DOM Elements
+    const loginTab = document.getElementById("login-tab");
+    const signupTab = document.getElementById("signup-tab");
+    const loginForm = document.getElementById("login-form");
+    const signupForm = document.getElementById("signup-form");
+    const loginBtn = document.getElementById("login-btn");
+    const signupBtn = document.getElementById("signup-btn");
+
+    // Switch Tabs
+    loginTab.addEventListener("click", () => switchTab('login'));
+    signupTab.addEventListener("click", () => switchTab('signup'));
+
+    function switchTab(tab) {
+      if (tab === 'login') {
+        loginTab.classList.add("active");
+        signupTab.classList.remove("active");
+        loginForm.classList.add("active");
+        signupForm.classList.remove("active");
+      } else {
+        signupTab.classList.add("active");
+        loginTab.classList.remove("active");
+        signupForm.classList.add("active");
+        loginForm.classList.remove("active");
+      }
+    }
+
+    // Password Visibility Toggle
+    function togglePassword(id, icon) {
+      const input = document.getElementById(id);
+      if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+      } else {
+        input.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+      }
+    }
+
+    // Password Strength Checker
+    function checkPasswordStrength(password) {
+      const strengthFill = document.getElementById("strength-fill");
+      const strengthText = document.getElementById("strength-text");
+      
+      let strength = 0;
+      let color = "#f44336"; // Red
+      
+      if (password.length >= 8) strength += 25;
+      if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength += 25;
+      if (password.match(/\d/)) strength += 25;
+      if (password.match(/[^a-zA-Z\d]/)) strength += 25;
+      
+      if (strength >= 75) {
+        color = "#4CAF50"; // Green
+        strengthText.textContent = "Strong";
+      } else if (strength >= 50) {
+        color = "#FF9800"; // Orange
+        strengthText.textContent = "Medium";
+      } else {
+        strengthText.textContent = "Weak";
+      }
+      
+      strengthFill.style.width = `${strength}%`;
+      strengthFill.style.background = color;
+    }
+
+    // Loading State for Buttons
+    function setLoading(button, isLoading) {
+      if (isLoading) {
+        button.classList.add("loading");
+        button.innerHTML = '<i class="fas fa-spinner"></i> Processing...';
+      } else {
+        button.classList.remove("loading");
+        if (button.id === 'login-btn') {
+          button.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login to Dashboard';
+        } else {
+          button.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+        }
+      }
+    }
+
+    // Simulated Signup Function
+    function signup() {
+      const name = document.getElementById("signup-name").value.trim();
+      const email = document.getElementById("signup-email").value.trim();
+      const password = document.getElementById("signup-password").value;
+      const msg = document.getElementById("signup-msg");
+
+      // Basic validation
+      if (!name || !email || !password) {
+        msg.innerHTML = "<div class='message error'><i class='fas fa-exclamation-circle'></i> All fields are required!</div>";
+        return;
+      }
+
+      if (password.length < 6) {
+        msg.innerHTML = "<div class='message error'><i class='fas fa-exclamation-circle'></i> Password must be at least 6 characters!</div>";
+        return;
+      }
+
+      // Show loading state
+      setLoading(signupBtn, true);
+
+      // Simulate API call delay
+      setTimeout(() => {
+        // Check if user already exists
+        const existingUser = localStorage.getItem(`farmer_${email}`);
+        
+        if (existingUser) {
+          msg.innerHTML = "<div class='message error'><i class='fas fa-exclamation-circle'></i> An account with this email already exists!</div>";
+          setLoading(signupBtn, false);
+          return;
+        }
+
+        // Store user data (in a real app, this would be sent to a server)
+        const userData = {
+          name: name,
+          email: email,
+          password: password, // In a real app, this would be hashed
+          joined: new Date().toISOString()
+        };
+        
+        localStorage.setItem(`farmer_${email}`, JSON.stringify(userData));
+        
+        // Success message
+        msg.innerHTML = "<div class='message success'><i class='fas fa-check-circle'></i> Account created successfully! Redirecting to login...</div>";
+        
+        // Reset form
+        document.getElementById("signup-form").reset();
+        document.getElementById("strength-fill").style.width = "20%";
+        document.getElementById("strength-text").textContent = "Weak";
+        
+        // Switch to login after delay
+        setTimeout(() => {
+          switchTab('login');
+          setLoading(signupBtn, false);
+        }, 2000);
+      }, 1500);
+    }
+
+    // Simulated Login Function
+    function login() {
+      const email = document.getElementById("login-email").value.trim();
+      const password = document.getElementById("login-password").value;
+      const remember = document.getElementById("remember").checked;
+      const msg = document.getElementById("login-msg");
+
+      // Basic validation
+      if (!email || !password) {
+        msg.innerHTML = "<div class='message error'><i class='fas fa-exclamation-circle'></i> Please enter both email and password!</div>";
+        return;
+      }
+
+      // Show loading state
+      setLoading(loginBtn, true);
+
+      // Simulate API call delay
+      setTimeout(() => {
+        // Check if user exists
+        const userData = localStorage.getItem(`farmer_${email}`);
+        
+        if (!userData) {
+          msg.innerHTML = "<div class='message error'><i class='fas fa-exclamation-circle'></i> No account found with this email!</div>";
+          setLoading(loginBtn, false);
+          return;
+        }
+
+        const user = JSON.parse(userData);
+        
+        // Check password (in a real app, this would be compared with a hashed password)
+        if (user.password !== password) {
+          msg.innerHTML = "<div class='message error'><i class='fas fa-exclamation-circle'></i> Incorrect password!</div>";
+          setLoading(loginBtn, false);
+          return;
+        }
+
+        // Store session if remember me is checked
+        if (remember) {
+          localStorage.setItem('currentUser', JSON.stringify(user));
+        } else {
+          sessionStorage.setItem('currentUser', JSON.stringify(user));
+        }
+
+        // Success message
+        msg.innerHTML = "<div class='message success'><i class='fas fa-check-circle'></i> Login successful! Redirecting to dashboard...</div>";
+        
+        // Redirect to dashboard after delay
+        setTimeout(() => {
+          window.location.href = "farmer_dashboard.html"; // Your dashboard page
+        }, 1500);
+      }, 1500);
+    }
+
+    // Check if user is already logged in (on page load)
+    window.addEventListener('DOMContentLoaded', () => {
+      const currentUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
+      if (currentUser) {
+        // User is already logged in, redirect to dashboard
+        window.location.href = "farmer_dashboard.html";
+      }
+    });
+  </script>
+</body>
+</html>

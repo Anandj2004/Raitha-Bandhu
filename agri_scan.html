@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raitha Bandhu - Farm to Customer</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.0"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --primary-dark: #388E3C;
+            --secondary: #FF9800;
+            --light: #F1F8E9;
+            --dark: #1B5E20;
+            --text: #212121;
+            --text-light: #757575;
+            --white: #FFFFFF;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav a:hover, nav a.active {
+            background-color: var(--primary-dark);
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%234CAF50"/><circle cx="50" cy="50" r="40" fill="%23388E3C"/></svg>');
+            background-size: cover;
+            color: var(--white);
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: #F57C00;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .section {
+            padding: 3rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--dark);
+        }
+        
+        .card {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tab-container {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .camera-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        #camera-preview {
+            width: 100%;
+            height: 300px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        #camera-feed {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .camera-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .prediction-result {
+            background-color: var(--light);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .inventory-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .inventory-item {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .inventory-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .item-image {
+            height: 200px;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .item-details {
+            padding: 1rem;
+        }
+        
+        .item-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .item-quantity {
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+        
+        .item-location {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        .qr-container {
+            text-align: center;
+            padding: 1.5rem;
+        }
+        
+        #qrcode {
+            display: inline-block;
+            margin: 1rem 0;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 12px 20px;
+            border-radius: 4px;
+            box-shadow: var(--shadow);
+            display: none;
+            z-index: 1000;
+        }
+        
+        .address-form {
+            background-color: var(--light);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        .address-form h4 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 10px;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: var(--primary);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                gap: 10px;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .inventory-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🌱</span>
+                    <span>Raitha Bandhu</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="nav-link active" data-tab="farmer">Farmer Dashboard</a></li>
+                        <li><a href="#" class="nav-link" data-tab="customer">Customer View</a></li>
+                        <li><a href="#" class="nav-link" data-tab="inventory">My Inventory</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Fresh Organic Products Direct from Farmers</h1>
+            <p>Connect farmers with customers through Raitha Bandhu - making inventory management and product discovery simple</p>
+            <a href="#" class="btn btn-primary" id="get-started">Get Started</a>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="tab-container">
+            <div class="tab active" data-tab="farmer">Farmer Dashboard</div>
+            <div class="tab" data-tab="customer">Customer View</div>
+            <div class="tab" data-tab="inventory">My Inventory</div>
+        </div>
+
+        <!-- Farmer Dashboard Tab -->
+        <div class="tab-content active" id="farmer-tab">
+            <div class="card">
+                <h2 class="section-title">Scan Your Agricultural Products</h2>
+                <div class="camera-container">
+                    <div id="camera-preview">
+                        <span>Camera feed will appear here</span>
+                    </div>
+                    <div class="camera-controls">
+                        <button class="btn" id="start-camera">Start Camera</button>
+                        <button class="btn" id="capture-photo">Capture & Identify</button>
+                    </div>
+                </div>
+                <div class="prediction-result" id="prediction-result">
+                    <h3>Product Identified: <span id="product-name">Apple</span></h3>
+                    <p>Confidence: <span id="confidence">85%</span></p>
+                    <button class="btn btn-primary" id="add-to-inventory">Add to Inventory</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="section-title">Product Details</h2>
+                <form id="product-form">
+                    <div class="form-group">
+                        <label for="product-name-input">Product Name</label>
+                        <input type="text" id="product-name-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-type">Product Type</label>
+                        <select id="product-type">
+                            <option value="fruit">Fruit</option>
+                            <option value="vegetable">Vegetable</option>
+                            <option value="grain">Grain</option>
+                            <option value="herb">Herb</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Quantity (kg)</label>
+                        <input type="number" id="quantity" min="0" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price per kg (₹)</label>
+                        <input type="number" id="price" min="0" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Product Description</label>
+                        <textarea id="description" rows="3"></textarea>
+                    </div>
+                    
+                    <h3 class="section-title">Seller Information</h3>
+                    <div class="form-group">
+                        <label for="seller-name">Your Name</label>
+                        <input type="text" id="seller-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone-number">Phone Number</label>
+                        <input type="tel" id="phone-number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Storehouse Location</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="location" style="flex: 1;">
+                            <button type="button" class="btn" id="get-location">Get Current Location</button>
+                        </div>
+                        <div class="loading" id="location-loading">
+                            <div class="spinner"></div>
+                            <p>Getting your location...</p>
+                        </div>
+                        <div class="address-form">
+                            <h4>Enter Full Address</h4>
+                            <div class="form-group">
+                                <label for="street">Street Address</label>
+                                <input type="text" id="street" placeholder="House no., Street name">
+                            </div>
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" placeholder="City">
+                            </div>
+                            <div class="form-group">
+                                <label for="state">State</label>
+                                <input type="text" id="state" placeholder="State">
+                            </div>
+                            <div class="form-group">
+                                <label for="postal-code">Postal Code</label>
+                                <input type="text" id="postal-code" placeholder="Postal Code">
+                            </div>
+                            <button type="button" class="btn" id="update-address">Update Address</button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Save to Inventory</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Customer View Tab -->
+        <div class="tab-content" id="customer-tab">
+            <div class="card">
+                <h2 class="section-title">Available Products</h2>
+                <div class="inventory-list" id="customer-inventory">
+                    <!-- Inventory items will be dynamically added here -->
+                </div>
+            </div>
+            
+            <div class="card qr-container">
+                <h2 class="section-title">Scan QR Code to View Inventory</h2>
+                <div id="qrcode"></div>
+                <p>Customers can scan this QR code to view your current inventory</p>
+                <button class="btn" id="refresh-qr">Refresh QR Code</button>
+            </div>
+        </div>
+
+        <!-- My Inventory Tab -->
+        <div class="tab-content" id="inventory-tab">
+            <div class="card">
+                <h2 class="section-title">My Inventory</h2>
+                <div class="inventory-list" id="inventory-list">
+                    <!-- Inventory items will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">Data saved successfully!</div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Raitha Bandhu. All rights reserved.</p>
+            <p>Connecting farmers with customers through technology</p>
+        </div>
+    </footer>
+
+    <script>
+        // Global variables
+        let model;
+        let currentStream;
+        let inventory = JSON.parse(localStorage.getItem('inventory')) || [];
+        let currentLocation = '';
+        let farmerProfile = JSON.parse(localStorage.getItem('farmerProfile')) || {
+            name: '',
+            phone: '',
+            address: {
+                street: '',
+                city: '',
+                state: '',
+                postalCode: ''
+            }
+        };
+
+        // DOM Elements
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const startCameraBtn = document.getElementById('start-camera');
+        const capturePhotoBtn = document.getElementById('capture-photo');
+        const cameraPreview = document.getElementById('camera-preview');
+        const predictionResult = document.getElementById('prediction-result');
+        const productNameElement = document.getElementById('product-name');
+        const confidenceElement = document.getElementById('confidence');
+        const addToInventoryBtn = document.getElementById('add-to-inventory');
+        const productForm = document.getElementById('product-form');
+        const productNameInput = document.getElementById('product-name-input');
+        const sellerNameInput = document.getElementById('seller-name');
+        const phoneNumberInput = document.getElementById('phone-number');
+        const getLocationBtn = document.getElementById('get-location');
+        const locationInput = document.getElementById('location');
+        const locationLoading = document.getElementById('location-loading');
+        const streetInput = document.getElementById('street');
+        const cityInput = document.getElementById('city');
+        const stateInput = document.getElementById('state');
+        const postalCodeInput = document.getElementById('postal-code');
+        const updateAddressBtn = document.getElementById('update-address');
+        const inventoryList = document.getElementById('inventory-list');
+        const customerInventory = document.getElementById('customer-inventory');
+        const notification = document.getElementById('notification');
+        const qrcodeContainer = document.getElementById('qrcode');
+        const refreshQrBtn = document.getElementById('refresh-qr');
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize tabs
+            initTabs();
+            
+            // Initialize TensorFlow.js model
+            initModel();
+            
+            // Initialize QR code
+            initQRCode();
+            
+            // Load inventory and farmer profile
+            loadFarmerProfile();
+            renderInventory();
+            renderCustomerInventory();
+            
+            // Set up event listeners
+            setupEventListeners();
+            
+            // Handle URL parameters for customer view
+            handleUrlParams();
+        });
+
+        // Initialize TensorFlow.js model
+        async function initModel() {
+            try {
+                console.log('Loading MobileNet model...');
+                model = await mobilenet.load();
+                console.log('Model loaded successfully');
+            } catch (error) {
+                console.error('Error loading model:', error);
+                showNotification('Error loading AI model. Please refresh the page.', 'error');
+            }
+        }
+
+        // Initialize QR code
+        function initQRCode() {
+            // Clear previous QR code
+            qrcodeContainer.innerHTML = '';
+            
+            // Generate QR code for the customer view
+            // Use the current page URL with the customer view parameter
+            const baseUrl = window.location.href.split('?')[0];
+            const customerUrl = `${baseUrl}?view=customer`;
+            
+            new QRCode(qrcodeContainer, {
+                text: customerUrl,
+                width: 200,
+                height: 200,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+
+        // Load farmer profile from localStorage
+        function loadFarmerProfile() {
+            sellerNameInput.value = farmerProfile.name || '';
+            phoneNumberInput.value = farmerProfile.phone || '';
+            streetInput.value = farmerProfile.address.street || '';
+            cityInput.value = farmerProfile.address.city || '';
+            stateInput.value = farmerProfile.address.state || '';
+            postalCodeInput.value = farmerProfile.address.postalCode || '';
+            
+            // Update location input with full address
+            updateLocationInput();
+        }
+
+        // Update location input with full address
+        function updateLocationInput() {
+            const addressParts = [];
+            if (farmerProfile.address.street) addressParts.push(farmerProfile.address.street);
+            if (farmerProfile.address.city) addressParts.push(farmerProfile.address.city);
+            if (farmerProfile.address.state) addressParts.push(farmerProfile.address.state);
+            if (farmerProfile.address.postalCode) addressParts.push(farmerProfile.address.postalCode);
+            
+            locationInput.value = addressParts.join(', ');
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Camera controls
+            startCameraBtn.addEventListener('click', startCamera);
+            capturePhotoBtn.addEventListener('click', captureAndIdentify);
+            addToInventoryBtn.addEventListener('click', function() {
+                // Pre-fill the product name in the form
+                const predictedProduct = productNameElement.textContent;
+                productNameInput.value = predictedProduct;
+                
+                // Scroll to the form
+                document.getElementById('product-form').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Form submission
+            productForm.addEventListener('submit', saveProduct);
+            
+            // Location
+            getLocationBtn.addEventListener('click', getCurrentLocation);
+            updateAddressBtn.addEventListener('click', updateAddress);
+            
+            // QR code refresh
+            refreshQrBtn.addEventListener('click', initQRCode);
+            
+            // Auto-save form data
+            setupAutoSave();
+        }
+
+        // Initialize tabs
+        function initTabs() {
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update active tab content
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${tabId}-tab`) {
+                            content.classList.add('active');
+                        }
+                    });
+                    
+                    // Update nav links
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('data-tab') === tabId) {
+                            link.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Nav links
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabs.forEach(tab => {
+                        tab.classList.remove('active');
+                        if (tab.getAttribute('data-tab') === tabId) {
+                            tab.classList.add('active');
+                        }
+                    });
+                    
+                    // Update active tab content
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${tabId}-tab`) {
+                            content.classList.add('active');
+                        }
+                    });
+                    
+                    // Update nav links
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        }
+
+        // Start camera
+        async function startCamera() {
+            try {
+                if (currentStream) {
+                    // If camera is already running, stop it
+                    stopCamera();
+                    return;
+                }
+                
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'environment' } 
+                });
+                
+                currentStream = stream;
+                const video = document.createElement('video');
+                video.id = 'camera-feed';
+                video.srcObject = stream;
+                video.autoplay = true;
+                
+                cameraPreview.innerHTML = '';
+                cameraPreview.appendChild(video);
+                
+                startCameraBtn.textContent = 'Stop Camera';
+                
+                // Enable capture button
+                capturePhotoBtn.disabled = false;
+            } catch (error) {
+                console.error('Error accessing camera:', error);
+                showNotification('Error accessing camera. Please check permissions.', 'error');
+            }
+        }
+
+        // Stop camera
+        function stopCamera() {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+                currentStream = null;
+                
+                cameraPreview.innerHTML = '<span>Camera feed will appear here</span>';
+                startCameraBtn.textContent = 'Start Camera';
+                capturePhotoBtn.disabled = true;
+                
+                // Hide prediction result
+                predictionResult.style.display = 'none';
+            }
+        }
+
+        // Capture photo and identify product
+        async function captureAndIdentify() {
+            if (!currentStream) {
+                showNotification('Please start the camera first.', 'error');
+                return;
+            }
+            
+            if (!model) {
+                showNotification('AI model is still loading. Please wait.', 'error');
+                return;
+            }
+            
+            try {
+                const video = document.getElementById('camera-feed');
+                const predictions = await model.classify(video);
+                
+                if (predictions && predictions.length > 0) {
+                    const topPrediction = predictions[0];
+                    
+                    // Map ImageNet classes to agricultural products
+                    const productName = mapToAgriculturalProduct(topPrediction.className);
+                    
+                    // Display prediction result
+                    productNameElement.textContent = productName;
+                    confidenceElement.textContent = `${Math.round(topPrediction.probability * 100)}%`;
+                    predictionResult.style.display = 'block';
+                    
+                    showNotification(`Product identified: ${productName}`);
+                } else {
+                    showNotification('Could not identify product. Please try again.', 'error');
+                }
+            } catch (error) {
+                console.error('Error during prediction:', error);
+                showNotification('Error identifying product. Please try again.', 'error');
+            }
+        }
+
+        // Map ImageNet classes to agricultural products
+        function mapToAgriculturalProduct(className) {
+            const productMappings = {
+                'apple': 'Apple',
+                'banana': 'Banana',
+                'orange': 'Orange',
+                'lemon': 'Lemon',
+                'grape': 'Grape',
+                'strawberry': 'Strawberry',
+                'corn': 'Corn',
+                'mushroom': 'Mushroom',
+                'potato': 'Potato',
+                'tomato': 'Tomato',
+                'carrot': 'Carrot',
+                'cucumber': 'Cucumber',
+                'bell pepper': 'Bell Pepper',
+                'onion': 'Onion',
+                'garlic': 'Garlic',
+                'broccoli': 'Broccoli',
+                'cauliflower': 'Cauliflower',
+                'cabbage': 'Cabbage',
+                'lettuce': 'Lettuce',
+                'spinach': 'Spinach',
+                'rice': 'Rice',
+                'wheat': 'Wheat',
+                'barley': 'Barley',
+                'oats': 'Oats'
+            };
+            
+            // Check for direct matches
+            for (const [key, value] of Object.entries(productMappings)) {
+                if (className.toLowerCase().includes(key)) {
+                    return value;
+                }
+            }
+            
+            // Return the original class name if no mapping found
+            return className.split(',')[0];
+        }
+
+        // Get current location using Geolocation API and reverse geocoding
+        async function getCurrentLocation() {
+            if (!navigator.geolocation) {
+                showNotification('Geolocation is not supported by your browser.', 'error');
+                return;
+            }
+            
+            // Show loading indicator
+            locationLoading.style.display = 'block';
+            getLocationBtn.disabled = true;
+            getLocationBtn.textContent = 'Getting Location...';
+            
+            try {
+                const position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject, {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    });
+                });
+                
+                const { latitude, longitude } = position.coords;
+                
+                // Use OpenStreetMap Nominatim API for reverse geocoding
+                const address = await reverseGeocode(latitude, longitude);
+                
+                // Update the location input
+                locationInput.value = address;
+                
+                // Try to parse the address into components
+                parseAddress(address);
+                
+                showNotification('Location obtained successfully');
+            } catch (error) {
+                console.error('Error getting location:', error);
+                let errorMessage = 'Error getting location. ';
+                
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        errorMessage += 'Please allow location access.';
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        errorMessage += 'Location information is unavailable.';
+                        break;
+                    case error.TIMEOUT:
+                        errorMessage += 'Location request timed out.';
+                        break;
+                    default:
+                        errorMessage += 'Please try again.';
+                }
+                
+                showNotification(errorMessage, 'error');
+            } finally {
+                // Hide loading indicator
+                locationLoading.style.display = 'none';
+                getLocationBtn.disabled = false;
+                getLocationBtn.textContent = 'Get Current Location';
+            }
+        }
+
+        // Reverse geocoding using OpenStreetMap Nominatim API
+        async function reverseGeocode(lat, lng) {
+            try {
+                const response = await fetch(
+                    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`
+                );
+                
+                if (!response.ok) {
+                    throw new Error('Geocoding API error');
+                }
+                
+                const data = await response.json();
+                
+                if (data && data.address) {
+                    const addr = data.address;
+                    
+                    // Build address string from components
+                    const addressParts = [];
+                    
+                    if (addr.road) addressParts.push(addr.road);
+                    if (addr.house_number) addressParts.push(addr.house_number);
+                    
+                    // Join street parts
+                    let streetAddress = addressParts.join(' ');
+                    
+                    // Build full address
+                    const fullAddressParts = [];
+                    if (streetAddress) fullAddressParts.push(streetAddress);
+                    if (addr.city || addr.town || addr.village) fullAddressParts.push(addr.city || addr.town || addr.village);
+                    if (addr.state) fullAddressParts.push(addr.state);
+                    if (addr.postcode) fullAddressParts.push(addr.postcode);
+                    if (addr.country) fullAddressParts.push(addr.country);
+                    
+                    return fullAddressParts.join(', ');
+                } else {
+                    return `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                }
+            } catch (error) {
+                console.error('Reverse geocoding error:', error);
+                // Fallback to coordinates
+                return `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+            }
+        }
+
+        // Parse address into components (basic implementation)
+        function parseAddress(address) {
+            // Simple parsing - in a real app you'd use a more sophisticated approach
+            const parts = address.split(',');
+            
+            if (parts.length >= 4) {
+                streetInput.value = parts[0].trim();
+                cityInput.value = parts[1].trim();
+                stateInput.value = parts[2].trim();
+                postalCodeInput.value = parts[3].trim();
+            } else if (parts.length === 3) {
+                streetInput.value = parts[0].trim();
+                cityInput.value = parts[1].trim();
+                stateInput.value = parts[2].trim();
+            } else if (parts.length === 2) {
+                streetInput.value = parts[0].trim();
+                cityInput.value = parts[1].trim();
+            } else {
+                streetInput.value = address;
+            }
+        }
+
+        // Update address from form
+        function updateAddress() {
+            farmerProfile.address = {
+                street: streetInput.value,
+                city: cityInput.value,
+                state: stateInput.value,
+                postalCode: postalCodeInput.value
+            };
+            
+            localStorage.setItem('farmerProfile', JSON.stringify(farmerProfile));
+            updateLocationInput();
+            showNotification('Address updated successfully');
+        }
+
+        // Save product to inventory
+        function saveProduct(e) {
+            e.preventDefault();
+            
+            // Update farmer profile
+            farmerProfile.name = sellerNameInput.value;
+            farmerProfile.phone = phoneNumberInput.value;
+            localStorage.setItem('farmerProfile', JSON.stringify(farmerProfile));
+            
+            const product = {
+                id: Date.now().toString(),
+                name: document.getElementById('product-name-input').value,
+                type: document.getElementById('product-type').value,
+                quantity: parseFloat(document.getElementById('quantity').value),
+                price: parseFloat(document.getElementById('price').value),
+                description: document.getElementById('description').value,
+                sellerName: farmerProfile.name,
+                phoneNumber: farmerProfile.phone,
+                location: locationInput.value,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Add to inventory
+            inventory.push(product);
+            
+            // Save to localStorage
+            localStorage.setItem('inventory', JSON.stringify(inventory));
+            
+            // Update UI
+            renderInventory();
+            renderCustomerInventory();
+            
+            // Reset form (except seller info)
+            document.getElementById('product-name-input').value = '';
+            document.getElementById('product-type').value = 'fruit';
+            document.getElementById('quantity').value = '';
+            document.getElementById('price').value = '';
+            document.getElementById('description').value = '';
+            
+            // Show notification
+            showNotification('Product added to inventory successfully');
+            
+            // Switch to inventory tab
+            document.querySelector('[data-tab="inventory"]').click();
+        }
+
+        // Setup auto-save for form
+        function setupAutoSave() {
+            const formInputs = productForm.querySelectorAll('input, select, textarea');
+            
+            formInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    // Save form data to localStorage
+                    const formData = {};
+                    formInputs.forEach(field => {
+                        if (field.type !== 'submit') {
+                            formData[field.id] = field.value;
+                        }
+                    });
+                    
+                    localStorage.setItem('formData', JSON.stringify(formData));
+                });
+            });
+            
+            // Load saved form data
+            const savedFormData = localStorage.getItem('formData');
+            if (savedFormData) {
+                const formData = JSON.parse(savedFormData);
+                for (const [key, value] of Object.entries(formData)) {
+                    const field = document.getElementById(key);
+                    if (field) {
+                        field.value = value;
+                    }
+                }
+            }
+        }
+
+        // Render inventory for farmer
+        function renderInventory() {
+            inventoryList.innerHTML = '';
+            
+            if (inventory.length === 0) {
+                inventoryList.innerHTML = '<p>No products in inventory. Add some products to get started.</p>';
+                return;
+            }
+            
+            inventory.forEach(product => {
+                const item = document.createElement('div');
+                item.className = 'inventory-item';
+                item.innerHTML = `
+                    <div class="item-image">
+                        <span style="font-size: 3rem;">🌱</span>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name">${product.name}</div>
+                        <div class="item-quantity">${product.quantity} kg • ₹${product.price}/kg</div>
+                        <div class="item-type">Type: ${product.type}</div>
+                        <div class="item-location">
+                            <span>📍</span>
+                            <span>${product.location || 'Location not set'}</span>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <button class="btn" onclick="editProduct('${product.id}')">Edit</button>
+                            <button class="btn" onclick="deleteProduct('${product.id}')" style="background-color: #f44336;">Delete</button>
+                        </div>
+                    </div>
+                `;
+                inventoryList.appendChild(item);
+            });
+        }
+
+        // Render inventory for customer view
+        function renderCustomerInventory() {
+            customerInventory.innerHTML = '';
+            
+            if (inventory.length === 0) {
+                customerInventory.innerHTML = '<p>No products available at the moment.</p>';
+                return;
+            }
+            
+            inventory.forEach(product => {
+                const item = document.createElement('div');
+                item.className = 'inventory-item';
+                item.innerHTML = `
+                    <div class="item-image">
+                        <span style="font-size: 3rem;">🌱</span>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name">${product.name}</div>
+                        <div class="item-quantity">${product.quantity} kg available</div>
+                        <div class="item-type">Type: ${product.type}</div>
+                        <div class="item-price">Price: ₹${product.price}/kg</div>
+                        <div class="item-description">${product.description || 'No description available'}</div>
+                        <div class="item-seller">Seller: ${product.sellerName}</div>
+                        <div class="item-contact">Contact: ${product.phoneNumber}</div>
+                        <div class="item-location">
+                            <span>📍</span>
+                            <span>${product.location || 'Location not set'}</span>
+                        </div>
+                    </div>
+                `;
+                customerInventory.appendChild(item);
+            });
+        }
+
+        // Handle URL parameters
+        function handleUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('view') === 'customer') {
+                document.querySelector('[data-tab="customer"]').click();
+            }
+        }
+
+        // Edit product
+        function editProduct(id) {
+            const product = inventory.find(p => p.id === id);
+            if (!product) return;
+            
+            // Fill form with product data
+            document.getElementById('product-name-input').value = product.name;
+            document.getElementById('product-type').value = product.type;
+            document.getElementById('quantity').value = product.quantity;
+            document.getElementById('price').value = product.price;
+            document.getElementById('description').value = product.description || '';
+            
+            // Remove product from inventory (will be re-added when saved)
+            deleteProduct(id, false);
+            
+            // Switch to farmer tab
+            document.querySelector('[data-tab="farmer"]').click();
+            
+            // Scroll to form
+            document.getElementById('product-form').scrollIntoView({ behavior: 'smooth' });
+            
+            showNotification('Product loaded for editing');
+        }
+
+        // Delete product
+        function deleteProduct(id, showNotification = true) {
+            inventory = inventory.filter(p => p.id !== id);
+            localStorage.setItem('inventory', JSON.stringify(inventory));
+            
+            renderInventory();
+            renderCustomerInventory();
+            
+            if (showNotification) {
+                showNotification('Product deleted from inventory');
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            notification.textContent = message;
+            notification.style.backgroundColor = type === 'error' ? '#f44336' : '#4CAF50';
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // Get started button
+        document.getElementById('get-started').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('[data-tab="farmer"]').click();
+        });
+    </script>
+</body>
+</html>

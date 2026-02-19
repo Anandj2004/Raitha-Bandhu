@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgriConnect - Crop Sales</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2d5a27;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 80%;
+      margin: 0 auto 30px;
+      border-collapse: collapse;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #4a7c42;
+      color: white;
+      font-size: 16px;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .total-row {
+      font-weight: bold;
+      background-color: #e2f0d9;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Number of Crops Sold</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Crop Name</th>
+          <th>Quantity Sold</th>
+          <th>Unit Price (₹)</th>
+          <th>Total Revenue (₹)</th>
+        </tr>
+      </thead>
+      <tbody id="cropTableBody">
+        <!-- Rows will be dynamically generated -->
+      </tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td colspan="3">Total Revenue</td>
+          <td id="totalRevenue">0</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <script>
+    // Sample crop data (can be fetched from a database later)
+    const cropsSold = [
+      { name: "Wheat", quantity: 120, price: 25 },
+      { name: "Rice", quantity: 80, price: 40 },
+      { name: "Corn", quantity: 150, price: 20 },
+      { name: "Tomatoes", quantity: 200, price: 15 },
+      { name: "Potatoes", quantity: 180, price: 10 }
+    ];
+
+    const tableBody = document.getElementById("cropTableBody");
+    let totalRevenue = 0;
+
+    cropsSold.forEach(crop => {
+      const revenue = crop.quantity * crop.price;
+      totalRevenue += revenue;
+
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${crop.name}</td>
+        <td>${crop.quantity}</td>
+        <td>${crop.price}</td>
+        <td>${revenue}</td>
+      `;
+      tableBody.appendChild(row);
+    });
+
+    document.getElementById("totalRevenue").innerText = totalRevenue;
+  </script>
+
+</body>
+</html>
